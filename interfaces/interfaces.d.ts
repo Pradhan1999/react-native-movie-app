@@ -1,77 +1,106 @@
-interface Movie {
-  id: number;
-  title: string;
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+export interface AnimeDataResponse {
+  data: Anime[];
 }
 
-interface TrendingMovie {
-  searchTerm: string;
-  movie_id: number;
+export interface Anime {
+  mal_id: number;
+  url: string;
+  images: {
+    jpg: ImageUrls;
+    webp: ImageUrls;
+  };
+  trailer: Trailer;
+  approved: boolean;
+  titles: Title[];
   title: string;
-  count: number;
-  poster_url: string;
-}
-
-interface MovieDetails {
-  adult: boolean;
-  backdrop_path: string | null;
-  belongs_to_collection: {
-    id: number;
-    name: string;
-    poster_path: string;
-    backdrop_path: string;
-  } | null;
-  budget: number;
-  genres: {
-    id: number;
-    name: string;
-  }[];
-  homepage: string | null;
-  id: number;
-  imdb_id: string | null;
-  original_language: string;
-  original_title: string;
-  overview: string | null;
-  popularity: number;
-  poster_path: string | null;
-  production_companies: {
-    id: number;
-    logo_path: string | null;
-    name: string;
-    origin_country: string;
-  }[];
-  production_countries: {
-    iso_3166_1: string;
-    name: string;
-  }[];
-  release_date: string;
-  revenue: number;
-  runtime: number | null;
-  spoken_languages: {
-    english_name: string;
-    iso_639_1: string;
-    name: string;
-  }[];
+  title_english: string;
+  title_japanese: string;
+  title_synonyms: string[];
+  type: string;
+  source: string;
+  episodes: number;
   status: string;
-  tagline: string | null;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+  airing: boolean;
+  aired: Aired;
+  duration: string;
+  rating: string;
+  score: number;
+  scored_by: number;
+  rank: number;
+  popularity: number;
+  members: number;
+  favorites: number;
+  synopsis: string;
+  background: string;
+  season: string;
+  year: number;
+  broadcast: Broadcast;
+  producers: Studio[];
+  licensors: Studio[];
+  studios: Studio[];
+  genres: Genre[];
+  explicit_genres: Genre[];
+  themes: Genre[];
+  demographics: Genre[];
 }
 
-interface TrendingCardProps {
-  movie: TrendingMovie;
-  index: number;
+export interface ImageUrls {
+  image_url: string;
+  small_image_url: string;
+  large_image_url: string;
+}
+
+export interface Trailer {
+  youtube_id: string;
+  url: string;
+  embed_url: string;
+  images: {
+    image_url: string;
+    small_image_url: string;
+    medium_image_url: string;
+    large_image_url: string;
+    maximum_image_url: string;
+  };
+}
+
+export interface Title {
+  type: string;
+  title: string;
+}
+
+export interface Aired {
+  from: string;
+  to: string;
+  prop: {
+    from: DateObject;
+    to: DateObject;
+  };
+  string: string;
+}
+
+export interface DateObject {
+  day: number;
+  month: number;
+  year: number;
+}
+
+export interface Broadcast {
+  day: string;
+  time: string;
+  timezone: string;
+  string: string;
+}
+
+export interface Studio {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
+}
+
+export interface Genre {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
 }
