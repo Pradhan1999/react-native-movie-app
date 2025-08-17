@@ -24,7 +24,7 @@ const Home = () => {
     data: animes,
     loading,
     error,
-  } = useFetch(() => fetchAnimes({ orderBy: "score" }));
+  } = useFetch(() => fetchAnimes({ orderBy: "score", sortBy: "desc" }));
 
   const {
     data: trendingAnimes,

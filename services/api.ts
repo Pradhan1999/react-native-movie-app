@@ -10,7 +10,7 @@ export const fetchAnimes = async ({
   limit = 10,
   keyword = "",
   orderBy,
-  sortBy = "desc",
+  sortBy,
 }: {
   page?: number;
   limit?: number;
