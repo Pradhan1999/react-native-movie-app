@@ -4,7 +4,14 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { icons } from "@/constants/icons";
 import { Anime } from "@/interfaces/interfaces";
 
-const AnimeCard = ({ mal_id, title, title_english, images }: Anime) => {
+const AnimeCard = ({
+  title,
+  title_english,
+  images,
+  score,
+  aired,
+  episodes,
+}: Anime) => {
   return (
     <Link href="/" asChild>
       <TouchableOpacity className="w-[30%]">
@@ -26,15 +33,17 @@ const AnimeCard = ({ mal_id, title, title_english, images }: Anime) => {
           <Image source={icons.star} className="size-4" />
           <Text className="text-xs text-white font-bold uppercase">
             {/* {Math.round(vote_average / 2)} */}
+            {score}
           </Text>
         </View>
 
-        <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center justify-between mb-3">
           <Text className="text-xs text-light-300 font-medium mt-1">
             {/* {release_date?.split("-")[0]} */}
+            {aired?.from?.split("-")[0] || "-"}
           </Text>
           <Text className="text-xs font-medium text-light-300 uppercase">
-            Movie
+            Episodes: {episodes || "-"}
           </Text>
         </View>
       </TouchableOpacity>

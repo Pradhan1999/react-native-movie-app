@@ -1,8 +1,10 @@
 import AnimeCard from "@/components/AnimeCard";
 import SearchBar from "@/components/SearchBar";
+import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { fetchAnimes } from "@/services/api";
+import { getTrendingAnimes } from "@/services/appwrite";
 import useFetch from "@/services/useFetch";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -18,7 +20,17 @@ import {
 const Home = () => {
   const router = useRouter();
 
-  const { data: animes, loading, error } = useFetch(() => fetchAnimes({}));
+  const {
+    data: animes,
+    loading,
+    error,
+  } = useFetch(() => fetchAnimes({ orderBy: "score" }));
+
+  const {
+    data: trendingAnimes,
+    loading: trendingLoading,
+    error: trendingError,
+  } = useFetch(getTrendingAnimes);
 
   return (
     <View className="flex-1 bg-primary">
@@ -37,23 +49,44 @@ const Home = () => {
         <View className="flex-1 mt-5">
           <SearchBar
             onPress={() => router.push("/search")}
-            placeholder="Search for a anime"
+            placeholder="Search for anime"
           />
 
           <View className="mt-5">
-            {loading ? (
+            {loading || trendingLoading ? (
               <ActivityIndicator
                 size="large"
                 color="#000ff"
                 className="mt-10 self-center"
               />
-            ) : error ? (
-              <Text>Error: {error.message}</Text>
+            ) : error || trendingError ? (
+              <Text>Error: {error?.message || trendingError?.message}</Text>
             ) : (
               <View>
+                {trendingAnimes && trendingAnimes?.length > 0 && (
+                  <Text className="text-white text-xl mb-3 font-bold">
+                    Trending Searches
+                  </Text>
+                )}
+
+                <FlatList
+                  data={trendingAnimes}
+                  renderItem={({ item, index }) => (
+                    <TrendingCard anime={item} index={index + 1} />
+                  )}
+                  keyExtractor={(item) => item.animeId.toString()}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  ItemSeparatorComponent={() => <View className="w-3" />}
+                />
+
+                <Text className="text-white text-xl mt-6 mb-3 font-bold">
+                  Most Popular
+                </Text>
+
                 <FlatList
                   data={animes}
-                  renderItem={({ item }) => <AnimeCard {...item} />}
+                  renderItem={({ item, index }) => <AnimeCard {...item} />}
                   keyExtractor={(item) => item.mal_id.toString()}
                   numColumns={3}
                   columnWrapperStyle={{
@@ -65,15 +98,6 @@ const Home = () => {
                   className="mt-2 pb-32"
                   scrollEnabled={false}
                 />
-                {/* {animes?.map((anime) => (
-                  <View
-                    key={anime.mal_id}
-                    className="bg-white p-4 rounded-lg mb-4 shadow"
-                  >
-                    <Text className="text-lg font-bold">{anime.title}</Text>
-                    <Text className="text-gray-600">{anime.source}</Text>
-                  </View>
-                ))} */}
               </View>
             )}
           </View>

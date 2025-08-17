@@ -8,12 +8,38 @@ export const JIKAN_CONFIG = {
 export const fetchAnimes = async ({
   page = 1,
   limit = 10,
+  keyword = "",
+  orderBy,
+  sortBy = "desc",
 }: {
   page?: number;
   limit?: number;
+  keyword?: string;
+  orderBy?:
+    | "title"
+    | "start_date"
+    | "end_date"
+    | "episodes"
+    | "score"
+    | "scored_by"
+    | "rank"
+    | "popularity"
+    | "members"
+    | "favorites";
+  sortBy?: "asc" | "desc";
 }): Promise<any[]> => {
   try {
-    const endpoint = `${JIKAN_CONFIG.BASE_URL}/top/anime?limit=${limit}&page=${page}`;
+    // Parameters
+    const params = new URLSearchParams({
+      q: keyword,
+      limit: limit.toString(),
+      page: page.toString(),
+      order_by: orderBy || "",
+      sort: sortBy || "",
+    });
+
+    // Endpoint
+    const endpoint = `${JIKAN_CONFIG.BASE_URL}/anime?${params.toString()}`;
 
     const response = await fetch(endpoint, {
       method: "GET",
