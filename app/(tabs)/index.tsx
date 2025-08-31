@@ -1,5 +1,4 @@
 import AnimeCard from "@/components/AnimeCard";
-import SearchBar from "@/components/SearchBar";
 import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
@@ -7,6 +6,7 @@ import { fetchAnimes } from "@/services/api";
 import { getTrendingAnimes } from "@/services/appwrite";
 import useFetch from "@/services/useFetch";
 import { useRouter } from "expo-router";
+import { Search } from "lucide-react-native";
 import React from "react";
 import {
   ActivityIndicator,
@@ -14,6 +14,7 @@ import {
   Image,
   ScrollView,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -32,6 +33,10 @@ const Home = () => {
     error: trendingError,
   } = useFetch(getTrendingAnimes);
 
+  const handleSearchPress = () => {
+    router.push("/search");
+  };
+
   return (
     <View className="flex-1 bg-primary">
       {/* Background img */}
@@ -47,10 +52,15 @@ const Home = () => {
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
 
         <View className="flex-1 mt-5">
-          <SearchBar
-            onPress={() => router.push("/search")}
-            placeholder="Search for anime"
-          />
+          {/* search bar */}
+          <TouchableOpacity
+            className="flex-row items-center bg-dark-200 rounded-full px-5 py-5 gap-3"
+            onPress={handleSearchPress}
+            activeOpacity={0.7}
+          >
+            <Search color="#ab8bff" size={20} />
+            <Text className="text-[#a8b5db]">Search for anime</Text>
+          </TouchableOpacity>
 
           <View className="mt-5">
             {loading || trendingLoading ? (
@@ -86,7 +96,7 @@ const Home = () => {
 
                 <FlatList
                   data={animes}
-                  renderItem={({ item, index }) => <AnimeCard {...item} />}
+                  renderItem={({ item }) => <AnimeCard {...item} />}
                   keyExtractor={(item) => item.mal_id.toString()}
                   numColumns={3}
                   columnWrapperStyle={{

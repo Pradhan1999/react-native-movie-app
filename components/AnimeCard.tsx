@@ -11,9 +11,10 @@ const AnimeCard = ({
   score,
   aired,
   episodes,
-}: Anime) => {
+  mal_id,
+}: Partial<Anime>) => {
   return (
-    <Link href="/" asChild>
+    <Link href={`/anime/${mal_id}`} asChild>
       <TouchableOpacity className="w-[30%]">
         <Image
           source={{

@@ -6,10 +6,15 @@ import { fetchAnimes } from "@/services/api";
 import { trackSearch } from "@/services/appwrite";
 import useFetch from "@/services/useFetch";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Keyboard, Text, View } from "react-native";
 
 const Search = () => {
+  const searchInputRef = React.useRef<any>(null);
   const [searchText, setSearchText] = useState("");
+
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
 
   const {
     data: animes,
@@ -43,6 +48,15 @@ const Search = () => {
     }
   }, [searchText, animes]);
 
+  // Auto-focus the search input when screen loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <View className="flex-1 bg-primary">
       {/* Background img */}
@@ -67,9 +81,13 @@ const Search = () => {
             </View>
             <View className="my-5">
               <SearchBar
+                ref={searchInputRef}
                 search={searchText}
                 setSearch={(text) => setSearchText(text)}
                 placeholder="Search for anime"
+                autoFocus={true}
+                returnKeyType="search"
+                onSubmitEditing={dismissKeyboard}
               />
             </View>
 

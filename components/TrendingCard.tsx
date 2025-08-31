@@ -5,13 +5,17 @@ interface CardProps {
   anime: {
     title: string;
     posterUrl: string;
+    animeId: number;
   };
   index?: number;
 }
 
-const TrendingCard = ({ anime: { title, posterUrl }, index }: CardProps) => {
+const TrendingCard = ({
+  anime: { title, posterUrl, animeId },
+  index,
+}: CardProps) => {
   return (
-    <Link href="/" asChild>
+    <Link href={`/anime/${animeId}`} asChild>
       <TouchableOpacity className="w-36 pl-5">
         <View className="mb-3 relative">
           <Image
@@ -24,7 +28,7 @@ const TrendingCard = ({ anime: { title, posterUrl }, index }: CardProps) => {
             resizeMode="cover"
           />
 
-          <View className="absolute top-1 left-1 bg-accent p-1.5 rounded-full">
+          <View className="absolute top-1 left-1 bg-warning p-1.5 rounded-full">
             <Text className="text-white">#{index}</Text>
           </View>
           <View className="">

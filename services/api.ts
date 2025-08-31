@@ -61,3 +61,26 @@ export const fetchAnimes = async ({
     throw error;
   }
 };
+
+export const fetchAnimeDetails = async (id: number): Promise<any> => {
+  try {
+    const endpoint = `${JIKAN_CONFIG.BASE_URL}/anime/${id}`;
+
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: JIKAN_CONFIG.headers,
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("API Error:", errorText);
+      throw new Error(
+        `Failed to fetch anime details: ${response.status} ${response.statusText}`
+      );
+    }
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
+};
