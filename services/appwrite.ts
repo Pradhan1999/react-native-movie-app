@@ -78,7 +78,6 @@ export const getTrendingAnimes = async () => {
 };
 
 export const bookmarkAnime = async (anime: any) => {
-  console.log("anime", anime);
   try {
     const result = await database.listDocuments(
       DATABASEID,
@@ -104,8 +103,9 @@ export const bookmarkAnime = async (anime: any) => {
           animeId: anime.mal_id,
           title: anime.title_english || anime.title,
           posterUrl: anime.images?.jpg?.image_url,
-          synopsis: anime.synopsis,
           score: Number(anime.score),
+          aired: anime.aired?.from,
+          episodes: anime.episodes,
         }
       );
       return true; // Return true to indicate bookmark was added
@@ -129,9 +129,9 @@ export const getBookmarkedAnimes = async () => {
       animeId: doc.animeId,
       title: doc.title,
       posterUrl: doc.posterUrl,
-      synopsis: doc.synopsis,
       score: doc.score,
-      createdAt: doc.createdAt,
+      aired: doc.aired,
+      episodes: doc.episodes,
     }));
   } catch (error) {
     console.error("Error fetching bookmarked animes:", error);

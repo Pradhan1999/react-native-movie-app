@@ -24,6 +24,7 @@ const Saved = () => {
   useFocusEffect(
     useCallback(() => {
       refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   );
 
@@ -77,6 +78,16 @@ const Saved = () => {
                     },
                   }}
                   score={item.score}
+                  aired={{
+                    from: item.aired,
+                    to: "",
+                    prop: {
+                      from: item.aired,
+                      to: item.aired,
+                    },
+                    string: "",
+                  }}
+                  episodes={item.episodes}
                 />
               )}
               keyExtractor={(item) => item.id.toString()}
